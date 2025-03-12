@@ -9,9 +9,7 @@ local function get_buffer_content()
 end
 
 local function query_ollama(prompt, context, cb)
-    local json = require("plenary.json")
     local http = require("plenary.curl").request
-
     local full_prompt = string.format(
         "Contexto del documento:\n```\n%s\n```\n\nInstrucción: %s",
         table.concat(context, "\n"),
@@ -22,18 +20,30 @@ local function query_ollama(prompt, context, cb)
         url = ollama_host .. "/api/generate",
         method = "post",
         headers = { ["Content-Type"] = "application/json" },
-        body = json.encode({
+        body = vim.fn.json_encode({
             model = model_name,
             prompt = full_prompt,
             stream = false,
             options = { temperature = 0.7 }
         }),
-        callback = function(response)
+        callback = function(response)  -- <--- Aquí va tu callback
             if response.status == 200 then
-                local data = json.decode(response.body)
-                cb(data.response)
+                local ok, data = pcall(function()
+                    if vim.json then
+                        return vim.json.decode(response.body)
+                    else
+                        return vim.fn.json_decode(response.body)
+                    end
+                end)
+                
+                if ok and data.response then
+                    cb(data.response)
+                else
+                    vim.notify("Error decodificando respuesta: " .. (data or "nil"), vim.log.levels.ERROR)
+                    cb(nil)
+                end
             else
-                vim.notify("Error en la consulta a Ollama: " .. response.body, vim.log.levels.ERROR)
+                vim.notify("Error en la consulta: " .. (response.body or "sin cuerpo"), vim.log.levels.ERROR)
                 cb(nil)
             end
         end
