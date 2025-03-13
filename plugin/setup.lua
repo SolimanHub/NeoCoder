@@ -1,1 +1,1 @@
-require('neo-plug').setup()
+require('NeoCoder').setup()

@@ -11,10 +11,23 @@ end
 local function query_ollama(prompt, context, cb)
     local http = require("plenary.curl").request
     local full_prompt = string.format(
-        "Contexto del documento:\n```\n%s\n```\n\nInstrucción: %s",
+        "[[INSTRUCCIONES ESTRICTAS]]\n"..
+        "1. SOLO RESPONDE CON EL CÓDIGO REQUERIDO\n"..
+        "2. SIN EXPLICACIONES\n"..
+        "3. SIN MARCADORES ```\n"..
+        "4. MANTENER ESTILO EXISTENTE\n"..
+        "5. INSERTAR SOLO DONDE ESTÁ EL MARCADOR ##ia:\n\n"..
+        "== CONTEXTO ACTUAL ==\n%s\n\n"..
+        "== PETICIÓN ==\n%s\n\n"..
+        "== EJEMPLO DE RESPUESTA CORRECTA ==\n"..
+        "Entrada: '##ia: agregar resta'\n"..
+        "Salida:\nresta=$((num1 - num2))\necho \"Resultado resta: $resta\"\n\n"..
+        "== TU RESPUESTA DEBE SER ==\n",
         table.concat(context, "\n"),
         prompt
     )
+
+    local original_row = vim.api.nvim_win_get_cursor(0)[1] - 1
 
     http({
         url = ollama_host .. "/api/generate",
@@ -24,37 +37,51 @@ local function query_ollama(prompt, context, cb)
             model = model_name,
             prompt = full_prompt,
             stream = false,
-            options = { temperature = 0.7 }
+            options = {
+                temperature = 0.1
+            }
         }),
-        callback = function(response)  -- <--- Aquí va tu callback
+        callback = vim.schedule_wrap(function(response)
             if response.status == 200 then
-                local ok, data = pcall(function()
-                    if vim.json then
-                        return vim.json.decode(response.body)
-                    else
-                        return vim.fn.json_decode(response.body)
-                    end
-                end)
+                local ok, data = pcall(vim.fn.json_decode, response.body)
                 
                 if ok and data.response then
-                    cb(data.response)
-                else
-                    vim.notify("Error decodificando respuesta: " .. (data or "nil"), vim.log.levels.ERROR)
-                    cb(nil)
+                    -- Limpieza agresiva de la respuesta
+                    local clean_response = data.response
+                        :gsub("```.-[\r\n]+", "")  
+                        :gsub("#.-\n", "")         
+                        :gsub("\n+", "\n")         
+                    
+                    -- Dividir y filtrar líneas válidas
+                    local lines = vim.split(clean_response:gsub("\r", ""), "\n")
+                    local filtered_lines = {}
+                    
+                    for _, line in ipairs(lines) do
+                        if line:match("%S") and  
+                           not line:match("^Aqu[ií]") and 
+                           not line:match("En este c[oó]digo") then
+                            table.insert(filtered_lines, line)
+                        end
+                    end
+
+                    if #filtered_lines > 0 then
+                        vim.api.nvim_buf_set_lines(0, original_row, original_row, false, filtered_lines)
+                        vim.api.nvim_win_set_cursor(0, {original_row + #filtered_lines + 1, 0})
+                    else
+                        vim.notify("Respuesta no contenía código válido", vim.log.levels.WARN)
+                    end
                 end
-            else
-                vim.notify("Error en la consulta: " .. (response.body or "sin cuerpo"), vim.log.levels.ERROR)
-                cb(nil)
             end
-        end
+        end)
     })
 end
+
 
 local function transform_line()
     local row = vim.api.nvim_win_get_cursor(0)[1] - 1
     local line = vim.api.nvim_buf_get_lines(0, row, row + 1, false)[1]
     
-    if line and line:match("^##ia: ") then
+    if line and line:match("##ia: ") then
         local prompt = line:sub(7)
         local context = get_buffer_content()
         
