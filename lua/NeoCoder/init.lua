@@ -2,7 +2,7 @@ local M = {}
 
 -- Configuración de Ollama (ajusta según tu setup)
 local ollama_host = "http://localhost:11434"
-local model_name = "qwen2.5-coder:14b"
+local model_name = vim.env.MODEL_NEOCODER
 
 local function get_buffer_content()
     return vim.api.nvim_buf_get_lines(0, 0, -1, false)

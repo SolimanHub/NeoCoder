@@ -32,11 +32,21 @@ use {
 
 ## Configuración
 
+### Configuración del Modelo
+
+NeoCoder fue construido utilizando el modelo `qwen2.5-coder:14b`. Sin embargo, puedes cambiar el modelo utilizado ajustando la variable de entorno. Ten en cuenta que los resultados pueden variar dependiendo del modelo seleccionado.
+
+1. Añade la siguiente línea a tu archivo de configuración de shell (`.zshrc`, `.bashrc`, o similar):
+
+```bash
+export MODEL_NEOCODER="qwen2.5-coder:14b"
+```
+
 Ajusta las siguientes variables según tu configuración de Ollama:
 
 ```lua
 local ollama_host = "http://localhost:11434"
-local model_name = "qwen2.5-coder:14b"
+local model_name = vim.env.MODEL_NEOCODER or "qwen2.5-coder:14b"
 ```
 
 ## Uso
@@ -83,6 +93,7 @@ NeoCoder es altamente personalizable. Puedes ajustar parámetros como la tempera
 ## Consideraciones
 
 - El rendimiento puede variar dependiendo de la complejidad de la instrucción y el tamaño del contexto.
+- La calidad y estilo del código generado pueden cambiar si se utiliza un modelo diferente al predeterminado (`qwen2.5-coder:14b`).
 
 NeoCoder transforma tu experiencia de codificación en Neovim, permitiéndote generar código de manera rápida y contextual, mejorando significativamente tu productividad como desarrollador.
 
