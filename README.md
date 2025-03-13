@@ -18,6 +18,11 @@ NeoCoder es un plugin innovador para Neovim que revoluciona la forma en que los 
 ```lua
 	use "solimanhub/neocoder"
 ```
+### Utilizando vim-plug agrega la linea:
+
+```lua
+    Plug 'solimanhub/neocoder'
+```
 
 ### Dependencias
 
