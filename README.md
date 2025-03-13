@@ -30,6 +30,21 @@ use {
 }
 ```
 
+Además, necesitarás instalar Ollama:
+
+1. Visita [Ollama](https://ollama.com/download) para más información.
+
+2. Instala Ollama ejecutando el siguiente comando:
+```bash
+curl -fsSL https://ollama.com/install.sh | sh
+```
+
+3. Una vez instalado Ollama, instala el modelo qwen2.5-coder:14b con el siguiente comando:
+
+```bash
+ollama pull qwen2.5-coder:14b
+```
+
 ## Configuración
 
 ### Configuración del Modelo
