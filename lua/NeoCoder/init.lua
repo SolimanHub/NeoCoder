@@ -16,11 +16,11 @@ local function query_ollama(prompt, context, cb)
         "2. SIN EXPLICACIONES\n"..
         "3. SIN MARCADORES ```\n"..
         "4. MANTENER ESTILO EXISTENTE\n"..
-        "5. INSERTAR SOLO DONDE ESTÁ EL MARCADOR ##ia:\n\n"..
+        "5. INSERTAR SOLO DONDE ESTÁ EL MARCADOR ##neo:\n\n"..
         "== CONTEXTO ACTUAL ==\n%s\n\n"..
         "== PETICIÓN ==\n%s\n\n"..
         "== EJEMPLO DE RESPUESTA CORRECTA ==\n"..
-        "Entrada: '##ia: agregar resta'\n"..
+        "Entrada: '##neo: agregar resta'\n"..
         "Salida:\nresta=$((num1 - num2))\necho \"Resultado resta: $resta\"\n\n"..
         "== TU RESPUESTA DEBE SER ==\n",
         table.concat(context, "\n"),
@@ -81,7 +81,7 @@ local function transform_line()
     local row = vim.api.nvim_win_get_cursor(0)[1] - 1
     local line = vim.api.nvim_buf_get_lines(0, row, row + 1, false)[1]
     
-    if line and line:match("##ia: ") then
+    if line and line:match("##neo: ") then
         local prompt = line:sub(7)
         local context = get_buffer_content()
         
