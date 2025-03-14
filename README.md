@@ -6,8 +6,6 @@ NeoCoder es un plugin innovador para Neovim que revoluciona la forma en que los 
 
 [Video demostración](https://odysee.com/$/embed/@wanderos:4/NeoCoder-Presentacion:e)
 
-<iframe width="560" height="315" src="https://odysee.com/$/embed/@wanderos:4/NeoCoder-Presentacion:e" frameborder="0" allowfullscreen></iframe>
-
 ## Características Principales
 
 - **Generación Contextual**: Utiliza el contenido actual del buffer para proporcionar contexto relevante.
