@@ -4,7 +4,7 @@
 
 NeoCoder es un plugin innovador para Neovim que revoluciona la forma en que los desarrolladores generan código. Utilizando la potente API de Ollama, NeoCoder permite a los usuarios crear código contextual de manera rápida y eficiente.
 
-> [Video demostración](https://odysee.com/$/embed/@wanderos:4/NeoCoder-Presentacion:e)
+[Video demostración](https://odysee.com/$/embed/@wanderos:4/NeoCoder-Presentacion:e){:target="_blank"}
 
 ## Características Principales
 
