@@ -1,8 +1,6 @@
 # NeoCoder
 
-```video
-<iframe width="560" height="315" src="https://odysee.com/$/embed/@wanderos:4/NeoCoder-Presentacion:e" frameborder="0" allowfullscreen></iframe>
-```
+![Comment.nvim](https://odysee.com/$/embed/@wanderos:4/NeoCoder-Presentacion:e)
 
 ## Generación de Código Contextual en Neovim
 
