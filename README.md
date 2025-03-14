@@ -1,13 +1,7 @@
 # NeoCoder
 
-```html
-<center>
-  <a href="https://odysee.com/@wanderos:4/NeoCoder-Presentacion:e" target="_blank">
-    <img src="https://thumbnails.odysee.com/optimize/s:1280:720/quality:85/plain/NeoCoder-Presentacion:e" width="600" style="border-radius: 8px; border: 2px solid #2d2d2d; margin: 20px 0; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-  </a>
-  <br>
-  <strong style="display: block; font-size: 1.4em; margin: 15px 0; color: #58a6ff;">¡Descubre NeoCoder, el plugin de Neovim que revoluciona tu flujo de trabajo como programador! 🚀</strong>
-</center>
+```video
+<iframe width="560" height="315" src="https://odysee.com/$/embed/@wanderos:4/NeoCoder-Presentacion:e" frameborder="0" allowfullscreen></iframe>
 ```
 
 ## Generación de Código Contextual en Neovim
